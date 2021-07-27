@@ -1,7 +1,7 @@
 # 1d_game
-I'm making typing game with python based on the print() function.
+As a fun exercise, I'm trying to make a typing game with python based on the print() function. The game interface is a string that is changed at each time step and displayed in the console.
 
-The game interface is a string that is changed at each time step and displayed in the console.
+I was able to make an animation with a canon shooting a letter across the screen.
 
 Getting a real-time keyboard input is quite hard. I explored multiple packages:
 - select
