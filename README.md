@@ -4,9 +4,7 @@ As a fun exercise, I made a typing game with python based on the print() functio
 The rules of the game are simple: There is a canon on the right-hand side of the screen that shoots words at the player (situated on the left-hand side of the screen). The player wins if they match the word being shot at them.
 
 Here are ideas for improvement:
-- The game breaks down if the player uses keyboard modifiers (upper case).
-- - Fix this (make the game not break down).
-- - Include upper case characters in the projectile.
+- Include upper case characters in the projectile.
 - Make the animation look good.
 - Make the game start over with an increased difficulty if the player wins. There are 3 parameters controling the difficulty: the projectile speed, the length of the path, the length of the projectile. Offer the player to choose which parameter is increased.
 - Now, the game is quite hard: The words are strings of random characters. Make it easier by picking actual words from a list.
