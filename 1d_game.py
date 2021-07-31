@@ -2,6 +2,28 @@ import time
 from sys import stdout
 from time import sleep
 import keyboard
+#import string
+import random
+
+path_length = 100
+sleep_time = 0.15
+opening_sleep_time = 0.5
+string = '_'*path_length
+
+#prepare the projectile
+projectile_length = 7
+letters = 'abcdefghijklmnopqrstuvwxyz'
+proj = ''.join(random.choice(letters) for i in range(projectile_length))
+proj_length = len(proj)
+p = list(proj)
+
+# all can be set to zero for debugging.
+all = 1
+
+#These are the variables for the player answer. k is the answer length and ans is the anser
+ans = ''
+k = len(ans)
+
 
 def remove_all_bold(string):
     string = string.replace('\x1b[1m','')
@@ -69,88 +91,133 @@ def print_sequencially(string,all):
     else:
         print('What do you want to print')
 
-sleep_time = 0.1
-string = '_'*100
+keyboard.start_recording()
+events = keyboard.stop_recording()
+
+#initialise string
 s = list(string)
-s.append('>o')
-string = "".join(s)
+s.append('=o')
 l = len(string)
-proj = 'x'
-all = 1
+string = "".join(s)
 
 print_sequencially(string,all)
-time.sleep(sleep_time)
+time.sleep(opening_sleep_time)
 
+#Animate canon
 s = list(string)
 s[-1] = 'O'
-s[-2] = '>'
 string = "".join(s)
 print_sequencially(string,all)
-time.sleep(sleep_time)
+time.sleep(opening_sleep_time)
 
 s = list(string)
 s[-1] = '0'
-s[-2] = '>'
 string = "".join(s)
 print_sequencially(string,all)
-time.sleep(sleep_time)
+time.sleep(opening_sleep_time)
 
-string = make_bold(string,l-1)
+string = make_bold(string,path_length+1)
 print_sequencially(string,all)
-time.sleep(sleep_time)
+time.sleep(opening_sleep_time)
+
+string = make_bold(string,path_length)
+print_sequencially(string,all)
+time.sleep(opening_sleep_time)
 
 string = remove_all_bold(string)
-string = make_bold(string,l-2)
-print_sequencially(string,all)
-time.sleep(sleep_time)
-
 s = list(string)
-s[l-3] = proj
-s[-1] = 'O'
+s[-2] = '>'
+string = ''.join(s)
+string = make_bold(string,path_length)
+string = make_bold(string,path_length+1)
+print_sequencially(string,all)
+time.sleep(opening_sleep_time)
+
+#The projectile enters here
+s = list(string)
+s[path_length-1] = p[0]
 string = ''.join(s)
 print_sequencially(string,all)
-
+    
 keyboard.start_recording()
-time.sleep(sleep_time)
+time.sleep(opening_sleep_time)
 events = keyboard.stop_recording()
-
-s = list(string)
-s[-1] = 'o'
-s[l-3] = '_'
-s[l-4] = proj
-
-k = 0
-for ev in events:
-    if ev.event_type == 'down':
-        s[k] = ev.name
-        k = k+1
-
-string = "".join(s)
-print_sequencially(string,all)
-
-keyboard.start_recording()
-time.sleep(sleep_time)
-events = keyboard.stop_recording()
-
-
-sleep_time = 0.05
-for pos in range(5,l+1,1):
-
+    
+for pos in range(path_length-2,path_length-proj_length-1,-1):
     s = list(string)
-    s[l-pos] = 'x'
-    s[l-pos+1] = '_'
+    s[pos:path_length] = p[0:path_length-pos]
+
     
     for ev in events:
         if ev.event_type == 'down':
             s[k] = ev.name
+            ans = ans + ev.name
             k = k+1
-
-
-    string = "".join(s)
-
+    
+    string = ''.join(s)
     print_sequencially(string,all)
     
     keyboard.start_recording()
     time.sleep(sleep_time)
     events = keyboard.stop_recording()
 
+
+#The for loop starts when the projectile has entirely entered the path.
+#pos denotes the left-most letter of the projectile. It runs to zero.
+
+string = remove_all_bold(string)
+s = list(string)
+s[-1] = 'o'
+s[-2] = '='
+s[path_length-proj_length-1:path_length-1] = proj
+s[path_length-1] = '_'
+    
+for ev in events:
+    if ev.event_type == 'down':
+        s[k] = ev.name
+        ans = ans + ev.name
+        k = k+1
+
+        
+string = "".join(s)
+print_sequencially(string,all)
+
+keyboard.start_recording()
+time.sleep(sleep_time)
+events = keyboard.stop_recording()
+
+    
+for pos in range(path_length-proj_length-2,-1,-1):
+
+    s = list(string)
+    s[pos:pos+proj_length] = proj
+    s[pos+proj_length] = '_'
+    
+    for ev in events:
+        if ev.event_type == 'down':
+            s[k] = ev.name
+            ans = ans + ev.name
+            k = k+1
+
+    
+    string = "".join(s)
+
+    print_sequencially(string,all)
+    
+    if pos+1 == len(ans):
+        if ans == proj:
+            print_sequencially('Horray, you win!  Press Esc to quit.',all)
+            keyboard.wait('esc')
+            quit()
+        else:
+            print_sequencially('Aw, you loose...  Press Esc to quit.',all)
+            keyboard.wait('esc')
+            quit()
+    else:
+        keyboard.start_recording()
+        time.sleep(sleep_time)
+        events = keyboard.stop_recording()
+        
+print_sequencially('You didn\'t enter anything... Don\'t you like my game?  Press Esc to quit.',all)
+keyboard.wait('esc')
+quit()
