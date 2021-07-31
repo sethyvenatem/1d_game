@@ -7,4 +7,6 @@ Getting a real-time keyboard input is quite hard. I explored multiple packages:
 - select
 - keyboard
 - pygame
-- getch (which is my best bet for now)
+- getch (which is my best bet for now). Actually, this does not work
+
+I could do it with the keyboard module.
