@@ -13,6 +13,7 @@ Still to do:
 - - first change the left-most '_' for '.' (or ':'). This shortens the path a bit and moves the projectile to the left by less than an entire underscore.
 - - restore the left-most '_' and move the projectile at the same time.
 - Get bash to ignore the keyboard inputs while I play. Once the word gs came along and it immediately opened ghost view at the end of the game. Any help to fix this would be welcome.
+- The keyboard input is not very consistent. Try to fix this.
 
 Here are additional ideas:
 - Include upper case characters in the projectile.
