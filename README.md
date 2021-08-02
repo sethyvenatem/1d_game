@@ -12,6 +12,7 @@ Still to do:
 - By construction, the framerate is directly tied to the speed of the prjectile. With the current parameters, it's a bit hard to catch the projectile but not too much. It is howewver hard to read because the projectile does not move smoothly. I could try to increase the framerate (without speeding up the projectile) by having a two-step animation (described below). This should double the frame-rate for a given projectile speed. I would have to do something with the right-most '_' as well so that the cannon does not shake. I would have to experiment with the character to replace '_' to make it look good.
 - - first change the left-most '_' for '.' (or ':'). This shortens the path a bit and moves the projectile to the left by less than an entire underscore.
 - - restore the left-most '_' and move the projectile at the same time.
+- Get bash to ignore the keyboard inputs while I play. Once the word gs came along and it immediately opened ghost view at the end of the game. Any help to fix this would be welcome.
 
 Here are additional ideas:
 - Include upper case characters in the projectile.
