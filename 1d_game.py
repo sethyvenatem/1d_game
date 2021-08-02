@@ -235,14 +235,14 @@ while True:
 
         if pos+1 == len(ans)+len(name):
             if ans == proj:
-                print_sequencially('Horray, you win!  Press \'Enter\' to continue.',show_all_strings)
+                print_sequencially('Horray, you win this round!  Press \'Enter\' to continue.',show_all_strings)
                 keyboard.wait('enter')
                 
                 score = score + len(proj)
                 
                 #prepare a new projectile
                 projectile_length = projectile_length + 1
-                if (projectile_length > 14) and (hard == 0):
+                if (projectile_length > 14) and (hard == 0) and (emoticon == 0):
                     
                     print_sequencially('Congratulations you have reached the longest words in my dictionnary! Would you rather: \n1. Play in hard mode? Press \'h\'. \n2. Stop here? Press \'s\'. \n3. Play emoticon mode (your score will stop growing)? Press \'e\' \nThen press \'Enter\'.',show_all_strings)
                     events = keyboard.record('enter')
@@ -262,12 +262,24 @@ while True:
                         board = ''
                         for ind in range(len(lead)):
                             board = board + lead.player.values[ind]+' : '+str(lead.score.values[ind])+'\n'
-                        board = board + '\nPress \'Esc\' to quit'
+                        board = board + '\nPress \'Esc\' to quit.'
                         print_sequencially(board,show_all_strings)
                         keyboard.wait('esc')
                         quit()
                     elif choice == 'e':
                         emoticon = 1
+                        print_sequencially('Your score is '+str(score)+'! Press \'Enter\' to see the leaderboard.',show_all_strings)
+                        keyboard.wait('enter')
+                        scores_pd = pd.read_csv('scores.csv')
+                        scores_pd = scores_pd.append(pd.DataFrame([[name[:-1], score]], columns=['player', 'score']), ignore_index = True)
+                        scores_pd.to_csv('scores.csv', index = False)
+                        lead = scores_pd.sort_values('score',ascending = False)
+                        board = ''
+                        for ind in range(len(lead)):
+                            board = board + lead.player.values[ind]+' : '+str(lead.score.values[ind])+'\n'
+                        board = board + '\nPress \'Enter\' to play emoticon-mode!'
+                        print_sequencially(board,show_all_strings)
+                        keyboard.wait('enter')
                     else:
                         print_sequencially('Something went wrong with your input. I\'ll set you to play on hard mode. Press \'Enter\' to continue.',show_all_strings)
                         keyboard.wait('enter')
@@ -295,19 +307,28 @@ while True:
                 break
 
             else:
-                print_sequencially('Aw, you loose...  Your score is '+str(score)+'! Press \'Enter\' to see the leaderboard.',show_all_strings)
-                keyboard.wait('enter')
-                scores_pd = pd.read_csv('scores.csv')
-                scores_pd = scores_pd.append(pd.DataFrame([[name[:-1], score]], columns=['player', 'score']), ignore_index = True)
-                scores_pd.to_csv('scores.csv', index = False)
-                lead = scores_pd.sort_values('score',ascending = False)
-                board = ''
-                for ind in range(len(lead)):
-                    board = board + str(lead.player.values[ind])+' : '+str(lead.score.values[ind])+'\n'
-                board = board + '\nPress \'Esc\' to quit'
-                print_sequencially(board,show_all_strings)
-                keyboard.wait('esc')
-                quit()
+                if emoticon == 1:
+                    print_sequencially('Aw, you loose... Thanks for playing for so long! Press \'Esc\' to quit.',show_all_strings)
+                    keyboard.wait('esc')
+                    quit()
+                if hard == 1:
+                    print_sequencially('Aw, you loose... Thanks for playing for so long! Press \'Esc\' to quit.',show_all_strings)
+                    keyboard.wait('esc')
+                    quit()
+                else:
+                    print_sequencially('Aw, you loose...  Your score is '+str(score)+'! Press \'Enter\' to see the leaderboard.',show_all_strings)
+                    keyboard.wait('enter')
+                    scores_pd = pd.read_csv('scores.csv')
+                    scores_pd = scores_pd.append(pd.DataFrame([[name[:-1], score]], columns=['player', 'score']), ignore_index = True)
+                    scores_pd.to_csv('scores.csv', index = False)
+                    lead = scores_pd.sort_values('score',ascending = False)
+                    board = ''
+                    for ind in range(len(lead)):
+                        board = board + str(lead.player.values[ind])+' : '+str(lead.score.values[ind])+'\n'
+                    board = board + '\nPress \'Esc\' to quit'
+                    print_sequencially(board,show_all_strings)
+                    keyboard.wait('esc')
+                    quit()
         else:
             keyboard.start_recording()
             time.sleep(sleep_time)
