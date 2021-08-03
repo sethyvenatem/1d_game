@@ -17,15 +17,13 @@ hard = 0
 emoticon = 0
 
 #prepare the projectile
-projectile_length = 14
+projectile_length = 1
 letters = 'abcdefghijklmnopqrstuvwxyz'
 proj = ''.join(random.choice(letters) for i in range(projectile_length))
 p = list(proj)
-proj = 'aaaaaaaaaaaaaa'
-p = list(proj)
 
 # show_all_strings can be set to zero for debugging.
-show_all_strings = 1
+show_all_strings = 0
 
 #These are the variables for the player answer. k is the answer length and ans is the anser
 ans = ''
