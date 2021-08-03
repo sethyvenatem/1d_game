@@ -17,13 +17,15 @@ hard = 0
 emoticon = 0
 
 #prepare the projectile
-projectile_length = 1
+projectile_length = 14
 letters = 'abcdefghijklmnopqrstuvwxyz'
 proj = ''.join(random.choice(letters) for i in range(projectile_length))
 p = list(proj)
+proj = 'aaaaaaaaaaaaaa'
+p = list(proj)
 
 # show_all_strings can be set to zero for debugging.
-show_all_strings = 0
+show_all_strings = 1
 
 #These are the variables for the player answer. k is the answer length and ans is the anser
 ans = ''
@@ -35,7 +37,7 @@ def remove_all_bold(string):
     string = string.replace('\x1b[0m','')
     return string
     
-def cout_all_bold(string):    
+def count_all_bold(string):    
     n = 0
     ind = string.find('\x1b[1m')
     while ind != -1:
@@ -76,11 +78,11 @@ def make_bold(string,n):
     bolds = find_all_bold(string)
     string = remove_all_bold(string)
     s = list(string)
-    s[n] = '\x1b[1m'+s[n]+'\x1b[0m'
+    #s[n] = '\x1b[1m'+s[n]+'\x1b[0m'
     
-    for ind in bolds:
-        if ind != n:
-            s[ind] = '\x1b[1m'+s[ind]+'\x1b[0m'
+    #for ind in bolds:
+    #    if ind != n:
+    #        s[ind] = '\x1b[1m'+s[ind]+'\x1b[0m'
             
     return "".join(s)
 
@@ -91,10 +93,12 @@ def print_sequencially(string,all):
         print(string)
     elif all == 0:
         os.system('clear')
-        stdout.write("\r")
-        stdout.write(string)
-        stdout.write("\r")
-        stdout.flush()
+        print(string)
+        #os.system('clear')
+        #stdout.write("\r")
+        #stdout.write(string)
+        #stdout.write("\r")
+        #stdout.flush()
     else:
         print('What do you want to print')
         
@@ -175,66 +179,65 @@ while True:
     print_sequencially(string,show_all_strings)
     time.sleep(sleep_time)
 
+    keyboard.start_recording()
+    
     #The projectile enters here
     s = list(string)
     s[path_length-1] = p[0]
     string = ''.join(s)
     print_sequencially(string,show_all_strings)
 
-    keyboard.start_recording()
     time.sleep(sleep_time)
     events = keyboard.stop_recording()
 
     for pos in range(path_length-2,path_length-projectile_length-1,-1):
+        
+        keyboard.start_recording()
+        
         s = list(string)
         s[pos:path_length] = p[0:path_length-pos]
-
-
         s, k, ans, sleep_time, fast = take_inputs(events, s, ans, k, sleep_time, fast)
-
         string = ''.join(s)
         print_sequencially(string,show_all_strings)
-
-        keyboard.start_recording()
+        
         time.sleep(sleep_time)
         events = keyboard.stop_recording()
 
-
-    #The for loop starts when the projectile has entirely entered the path.
-    #pos denotes the left-most letter of the projectile. It runs to zero.
-
+    keyboard.start_recording()
+    
     string = remove_all_bold(string)
     s = list(string)
     s[-1] = 'o'
     s[-2] = '='
     s[path_length-projectile_length-1:path_length-1] = p
     s[path_length-1] = '_'
-
     s, k, ans, sleep_time, fast = take_inputs(events, s, ans, k, sleep_time, fast)
-
     string = "".join(s)
     print_sequencially(string,show_all_strings)
-
-    keyboard.start_recording()
+    
     time.sleep(sleep_time)
     events = keyboard.stop_recording()
 
-
+    #The for loop starts when the projectile has entirely entered the path.
+    #pos denotes the left-most letter of the projectile. It runs to zero.
     for pos in range(path_length-projectile_length-2,-1,-1):
 
+        keyboard.start_recording()
+        
         s = list(string)
         s[pos:pos+projectile_length] = p
         s[pos+projectile_length] = '_'
-
         s, k, ans, sleep_time, fast = take_inputs(events, s, ans, k, sleep_time, fast)
-
-
         string = "".join(s)
-
         print_sequencially(string,show_all_strings)
-
+            
+            
         if pos+1 == len(ans)+len(name):
             if ans == proj:
+                
+                time.sleep(sleep_time)
+                events = keyboard.stop_recording()
+            
                 print_sequencially('Horray, you win this round!  Press \'Enter\' to continue.',show_all_strings)
                 keyboard.wait('enter')
                 
@@ -246,8 +249,7 @@ while True:
                     
                     print_sequencially('Congratulations you have reached the longest words in my dictionnary! Would you rather: \n1. Play in hard mode? Press \'h\'. \n2. Stop here? Press \'s\'. \n3. Play emoticon mode (your score will stop growing)? Press \'e\' \nThen press \'Enter\'.',show_all_strings)
                     events = keyboard.record('enter')
-                    choice = events[1].name
-                    
+                    choice = events[1].name                    
                     
                     if choice == 'h':
                         hard = 1
@@ -277,7 +279,7 @@ while True:
                         board = ''
                         for ind in range(len(lead)):
                             board = board + lead.player.values[ind]+' : '+str(lead.score.values[ind])+'\n'
-                        board = board + '\nPress \'Enter\' to play emoticon-mode!'
+                        board = board + '\nPress \'Enter\' to play emoticon-mode! Sorry, it\'s still a bit buggy... :('
                         print_sequencially(board,show_all_strings)
                         keyboard.wait('enter')
                     else:
@@ -289,11 +291,12 @@ while True:
                 if hard == 1:
                     proj = ''.join(random.choice(letters) for i in range(projectile_length))
                     p = list(proj)
-                if emoticon == 1:
+                elif emoticon == 1:
                     words_raw = pd.read_csv('emoticons.csv',names = ['words'])
                     words_raw = words_raw.apply(lambda x: x[0],axis = 1)
                     proj = np.random.choice(words_raw.values, size = 1)[0]
                     p = list(proj)
+                    projectile_length = len(proj)
                 else:
                     words_raw = pd.read_csv('words_raw.csv',names = ['words'])
                     words_raw = words_raw.apply(lambda x: x[0],axis = 1).str.lower()
@@ -307,12 +310,25 @@ while True:
                 break
 
             else:
+                time.sleep(sleep_time)
+                events = keyboard.stop_recording()
+                
                 if emoticon == 1:
                     print_sequencially('Aw, you loose... Thanks for playing for so long! Press \'Esc\' to quit.',show_all_strings)
                     keyboard.wait('esc')
                     quit()
                 if hard == 1:
-                    print_sequencially('Aw, you loose... Thanks for playing for so long! Press \'Esc\' to quit.',show_all_strings)
+                    print_sequencially('Aw, you loose... Thanks for playing for so long! Your score is '+str(score)+'! Press \'Enter\' to see the leaderboard.',show_all_strings)
+                    keyboard.wait('enter')
+                    scores_pd = pd.read_csv('scores.csv')
+                    scores_pd = scores_pd.append(pd.DataFrame([[name[:-1], score]], columns=['player', 'score']), ignore_index = True)
+                    scores_pd.to_csv('scores.csv', index = False)
+                    lead = scores_pd.sort_values('score',ascending = False)
+                    board = ''
+                    for ind in range(len(lead)):
+                        board = board + str(lead.player.values[ind])+' : '+str(lead.score.values[ind])+'\n'
+                    board = board + '\nPress \'Esc\' to quit'
+                    print_sequencially(board,show_all_strings)
                     keyboard.wait('esc')
                     quit()
                 else:
@@ -330,6 +346,5 @@ while True:
                     keyboard.wait('esc')
                     quit()
         else:
-            keyboard.start_recording()
             time.sleep(sleep_time)
             events = keyboard.stop_recording()
