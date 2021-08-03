@@ -1,5 +1,5 @@
 # 1d_game
-As a fun exercise, I made a typing game with python based on the print() function. The game interface is a string that is changed at each time step and displayed in the console.
+As a fun exercise, I made a typing game with python based on the print() function. The game interface is a string that is changed at each time step and displayed in the console. To run the game, open a terminal in the same folder as everything else and enter sudo ./1d_game.sh. The sudo is necessary to use the keyboard module, sorry.
 
 The rules of the game are simple: There is a canon on the right-hand side of the screen that shoots words at the player (situated on the left-hand side of the screen). The player moves on to the next round if they type in the word being shot at them. The game ends when a word is not typed correctly. Also: 'Backspace' is disabled and the player can temporarily speed up the projectils by pressing 'Enter'.
 
@@ -13,7 +13,6 @@ Still to do:
 - - first change the left-most '_' for '.' (or ':'). This shortens the path a bit and moves the projectile to the left by less than an entire underscore.
 - - restore the left-most '_' and move the projectile at the same time.
 - Get bash to ignore the keyboard inputs while I play. Once the word gs came along and it immediately opened ghost view at the end of the game. Any help to fix this would be welcome.
-- The keyboard input is not very consistent. Try to fix this.
 - Test the emoticon mode
 
 Here are additional ideas:
