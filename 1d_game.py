@@ -106,6 +106,21 @@ def take_inputs(events, s, ans, k, sleep_time, fast):
                 k = k+1
     return s, k, ans, sleep_time, fast
 
+def print_leaderboard(name,score,emoticon):
+    scores_pd = pd.read_csv('scores.csv')
+    scores_pd = scores_pd.append(pd.DataFrame([[name[:-1], score]], columns=['player', 'score']), ignore_index = True)
+    scores_pd.to_csv('scores.csv', index = False)
+    lead = scores_pd.sort_values('score',ascending = False)
+    board = '\n \n'
+    for ind in range(len(lead)):
+        board = board + lead.player.values[ind]+' : '+str(lead.score.values[ind])+'\n'
+    if emoticon == 1:
+        board = board + '\nPress \'Enter\' to play emoticon-mode! Sorry, it\'s still a bit buggy... :('
+    else:
+        board = board + '\nPress \'Esc\' to quit.'
+        
+    return board
+
 intro = 'Please type in your name and press \'Enter\'.'
 os.system('clear')
 name = input(intro)
@@ -299,14 +314,7 @@ while True:
                     elif choice == 's':
                         print_sequencially('\n \nYour score is '+str(score)+'! Press \'Enter\' to see the leaderboard.',show_all_strings)
                         keyboard.wait('enter')
-                        scores_pd = pd.read_csv('scores.csv')
-                        scores_pd = scores_pd.append(pd.DataFrame([[name[:-1], score]], columns=['player', 'score']), ignore_index = True)
-                        scores_pd.to_csv('scores.csv', index = False)
-                        lead = scores_pd.sort_values('score',ascending = False)
-                        board = '\n \n'
-                        for ind in range(len(lead)):
-                            board = board + lead.player.values[ind]+' : '+str(lead.score.values[ind])+'\n'
-                        board = board + '\nPress \'Esc\' to quit.'
+                        board = print_leaderboard(name,score,emoticon)
                         print_sequencially(board,show_all_strings)
                         keyboard.wait('esc')
                         quit()
@@ -314,14 +322,7 @@ while True:
                         emoticon = 1
                         print_sequencially('\n \nYour score is '+str(score)+'! Press \'Enter\' to see the leaderboard.',show_all_strings)
                         keyboard.wait('enter')
-                        scores_pd = pd.read_csv('scores.csv')
-                        scores_pd = scores_pd.append(pd.DataFrame([[name[:-1], score]], columns=['player', 'score']), ignore_index = True)
-                        scores_pd.to_csv('scores.csv', index = False)
-                        lead = scores_pd.sort_values('score',ascending = False)
-                        board = '\n \n'
-                        for ind in range(len(lead)):
-                            board = board + lead.player.values[ind]+' : '+str(lead.score.values[ind])+'\n'
-                        board = board + '\nPress \'Enter\' to play emoticon-mode! Sorry, it\'s still a bit buggy... :('
+                        board = print_leaderboard(name,score,emoticon)
                         print_sequencially(board,show_all_strings)
                         keyboard.wait('enter')
                     else:
@@ -362,28 +363,14 @@ while True:
                 if hard == 1:
                     print_sequencially('\n \nAw, you loose... Thanks for playing for so long! Your score is '+str(score)+'! Press \'Enter\' to see the leaderboard.',show_all_strings)
                     keyboard.wait('enter')
-                    scores_pd = pd.read_csv('scores.csv')
-                    scores_pd = scores_pd.append(pd.DataFrame([[name[:-1], score]], columns=['player', 'score']), ignore_index = True)
-                    scores_pd.to_csv('scores.csv', index = False)
-                    lead = scores_pd.sort_values('score',ascending = False)
-                    board = '\n \n'
-                    for ind in range(len(lead)):
-                        board = board + str(lead.player.values[ind])+' : '+str(lead.score.values[ind])+'\n'
-                    board = board + '\nPress \'Esc\' to quit'
+                    board = print_leaderboard(name,score,emoticon)
                     print_sequencially(board,show_all_strings)
                     keyboard.wait('esc')
                     quit()
                 else:
                     print_sequencially('\n \nAw, you loose...  Your score is '+str(score)+'! Press \'Enter\' to see the leaderboard.',show_all_strings)
                     keyboard.wait('enter')
-                    scores_pd = pd.read_csv('scores.csv')
-                    scores_pd = scores_pd.append(pd.DataFrame([[name[:-1], score]], columns=['player', 'score']), ignore_index = True)
-                    scores_pd.to_csv('scores.csv', index = False)
-                    lead = scores_pd.sort_values('score',ascending = False)
-                    board = '\n \n'
-                    for ind in range(len(lead)):
-                        board = board + str(lead.player.values[ind])+' : '+str(lead.score.values[ind])+'\n'
-                    board = board + '\nPress \'Esc\' to quit'
+                    board = print_leaderboard(name,score,emoticon)
                     print_sequencially(board,show_all_strings)
                     keyboard.wait('esc')
                     quit()
