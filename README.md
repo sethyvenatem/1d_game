@@ -8,7 +8,8 @@ The score is the sum of the number of characters in the player's name and the nu
 There is a hard-mode and an emoticon-mode that are also accessible.
 
 Still to do:
-- Get bash to ignore the keyboard inputs while I play. Once the word gs came along and it immediately opened ghost view at the end of the game. Any help to fix this would be welcome.
+- Get bash to ignore the keyboard inputs while I play. Once the word 'gs' came along and it immediately opened ghost view at the end of the game. Any help to fix this would be welcome.
+- To make it look better, I use stty -echo and stty echo in the .sh file. This has the side effect that the input of the player is not displayed when the input() function is called. This is a problem at the beginning of the game where the player is asked to type their name but is not given feedback. One fix could be to re-invent the input() function using the keyboard module. Another smarter solution would be to better learn how to use stty -echo to solve this problem and the one above.
 - Test (and fix) the emoticon mode
 
 Here are additional ideas:
