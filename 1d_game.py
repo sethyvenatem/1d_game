@@ -304,7 +304,7 @@ while True:
                 projectile_length = projectile_length + 1
                 if (projectile_length > 14) and (hard == 0) and (emoticon == 0):
                     
-                    print_sequencially('\n \nCongratulations you have reached the longest words in my dictionnary! Would you rather: \n1. Play in hard mode? Press \'h\'. \n2. Stop here? Press \'s\'. \n3. Play emoticon mode (your score will stop growing)? Press \'e\' \nThen press \'Enter\'.',show_all_strings)
+                    print_sequencially('\n \nCongratulations you have reached the longest words in my dictionnary! Would you rather: \n1. Play in hard mode? Press \'h\'. \n2. Stop here? Press \'s\'. \n3. Play emoticon mode (your score will stop growing)? Press \'e\' \nThen press \'Enter\'.\n \n',show_all_strings)
                     events = keyboard.record('enter')
                     choice = events[1].name                    
                     
